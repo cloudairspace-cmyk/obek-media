@@ -1,0 +1,14 @@
+# Large video files (too big for GitHub, host on YouTube/CDN instead)
+homers research consult.mp4
+Highlight.mp4
+
+# IDE
+.vscode/
+
+# OS files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Preview/dev files
+preview_logos.html
