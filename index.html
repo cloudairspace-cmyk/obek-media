@@ -377,6 +377,19 @@
       pointer-events: none;
     }
 
+    .hero-bg-video iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 56.25vw; /* 16:9 Aspect Ratio */
+      min-height: 100vh;
+      min-width: 177.77vh; /* 16:9 Aspect Ratio (100 * 16 / 9) */
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      border: none;
+    }
+
     .hero::before {
       content: '';
       position: absolute;
@@ -1880,8 +1893,7 @@
     <div class="hero-bg-video" id="heroBgVideo" aria-hidden="true">
       <iframe
         src="https://www.youtube.com/embed/sY6GGJTTwj4?autoplay=1&mute=1&loop=1&playlist=sY6GGJTTwj4&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&playsinline=1&enablejsapi=1&origin=null"
-        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
-        style="position:absolute; top:50%; left:50%; width:120%; height:120%; transform:translate(-50%,-50%); pointer-events:none; border:none;">
+        frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
       </iframe>
     </div>
     <div class="hero-content">
