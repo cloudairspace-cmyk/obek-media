@@ -2274,6 +2274,14 @@
 
   <div class="section-divider"></div>
 
+  <!-- ===== SHOWREEL CTA (background only) ===== -->
+  <section class="showreel" id="showreel" aria-label="Showreel background">
+    <div class="container">
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
   <!-- ===== TESTIMONIALS ===== -->
   <section class="testimonials" id="testimonials" aria-label="Client testimonials">
     <div class="container">
@@ -2734,7 +2742,7 @@
         showreelVideo.currentTime = 0;
       }
 
-      showreelPlayBtn.addEventListener('click', openVideoModal);
+      if (showreelPlayBtn) showreelPlayBtn.addEventListener('click', openVideoModal);
       videoModalClose.addEventListener('click', closeVideoModal);
 
       // Close on overlay click (outside the video)
