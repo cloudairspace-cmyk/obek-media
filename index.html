@@ -1191,6 +1191,7 @@
       overflow: hidden;
       background: var(--color-bg-card);
       transition: transform 0.4s var(--ease-out);
+      cursor: pointer;
     }
 
     .project-card-thumb {
@@ -2137,6 +2138,22 @@
       </div>
       <div class="portfolio-grid" id="portfolioGrid">
         <!-- Project 1 -->
+        <article class="project-card reveal" data-category="commercial"
+          data-linkedin="https://www.linkedin.com/feed/update/urn:li:activity:7528230503343206400/"
+          data-thumb="halving-thumbnail.jpg" aria-label="Project: Bittoken Halving">
+          <div class="project-card-thumb">
+            <div class="project-play" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <polygon points="5,3 19,12 5,21"></polygon>
+              </svg>
+            </div>
+          </div>
+          <div class="project-info">
+            <h4 class="project-title">Bittoken Halving</h4>
+            <p class="project-subtitle">Halving Explainer Video</p>
+          </div>
+        </article>
+        <!-- Project 2 -->
         <article class="project-card reveal" data-category="narrative"
           data-youtube="https://youtu.be/sY6GGJTTwj4?si=dNZBjqY5Y-lxsdSe" aria-label="Project: Echoes in the Dark">
           <div class="project-card-thumb">
@@ -2151,7 +2168,7 @@
             <p class="project-subtitle">Best Research Company</p>
           </div>
         </article>
-        <!-- Project 2 -->
+        <!-- Project 3 -->
         <article class="project-card reveal" data-category="commercial" data-youtube="https://youtu.be/gS7WISwj47o"
           aria-label="Project: Aura Fragrance Campaign">
           <div class="project-card-thumb">
@@ -2166,7 +2183,7 @@
             <p class="project-subtitle">Volunteering Video for RITA Africa</p>
           </div>
         </article>
-        <!-- Project 3 -->
+        <!-- Project 4 -->
         <article class="project-card reveal" data-category="promotional"
           data-youtube="https://youtu.be/hyCeN2A2SAU?si=hOGyGjYbAPeBG8pe" data-thumb="custom thumbnail.png"
           aria-label="Project: Elevate Fitness">
@@ -2182,7 +2199,7 @@
             <p class="project-subtitle">Video To Showcase How Their Platform Works</p>
           </div>
         </article>
-        <!-- Project 4 -->
+        <!-- Project 5 -->
         <article class="project-card reveal" data-category="narrative" data-youtube="https://youtu.be/Tao2Lc7al4c"
           data-thumb="image.png" aria-label="Project: The Last Drop">
           <div class="project-card-thumb">
@@ -2197,7 +2214,7 @@
             <p class="project-subtitle">Website CreationCourse Introdutory Video </p>
           </div>
         </article>
-        <!-- Project 5 -->
+        <!-- Project 6 -->
         <article class="project-card reveal" data-category="commercial"
           data-youtube="https://youtu.be/Ufyh5TLc2_0?si=ISbWUmrvnhuJYdIA" aria-label="Project: Rove Athletics Campaign">
           <div class="project-card-thumb">
@@ -2212,7 +2229,7 @@
             <p class="project-subtitle">A video Introducing how the platform works </p>
           </div>
         </article>
-        <!-- Project 6 -->
+        <!-- Project 7 -->
         <article class="project-card reveal" data-category="commercial"
           data-youtube="https://youtu.be/et9aayI69ZI" data-thumb="Python.png"
           aria-label="Project: Python Masterclass">
@@ -2428,6 +2445,15 @@
     <div class="video-modal-container">
       <button class="video-modal-close" id="ytModalClose" aria-label="Close video">&times;</button>
       <div id="ytIframeWrapper" style="width:100%;height:100%;"></div>
+    </div>
+  </div>
+
+  <!-- ===== LINKEDIN MODAL (for LinkedIn video posts) ===== -->
+  <div class="video-modal-overlay" id="liModalOverlay" aria-hidden="true" role="dialog"
+    aria-label="LinkedIn video player">
+    <div class="video-modal-container">
+      <button class="video-modal-close" id="liModalClose" aria-label="Close video">&times;</button>
+      <div id="liIframeWrapper" style="width:100%;height:100%;"></div>
     </div>
   </div>
 
@@ -2739,6 +2765,9 @@
         if (e.key === 'Escape' && ytModalOverlay.classList.contains('active')) {
           closeYtModal();
         }
+        if (e.key === 'Escape' && liModalOverlay.classList.contains('active')) {
+          closeLiModal();
+        }
       });
 
       // ========== YOUTUBE MODAL FOR PORTFOLIO PROJECTS ==========
@@ -2787,12 +2816,57 @@
         if (e.target === ytModalOverlay) closeYtModal();
       });
 
+      // ========== LINKEDIN MODAL FOR PORTFOLIO PROJECTS ==========
+      const liModalOverlay = document.getElementById('liModalOverlay');
+      const liModalClose = document.getElementById('liModalClose');
+      const liIframeWrapper = document.getElementById('liIframeWrapper');
+
+      // Extract LinkedIn embed URL from a full LinkedIn post URL
+      function extractLinkedInEmbed(input) {
+        if (!input) return null;
+        // Match activity ID with colon: urn:li:activity:XXXXXXXX
+        let match = input.match(/activity[:\-](\d+)/);
+        if (match) return `https://www.linkedin.com/embed/feed/update/urn:li:activity:${match[1]}`;
+        match = input.match(/ugcPost[:\-](\d+)/);
+        if (match) return `https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:${match[1]}`;
+        // If it's already an embed URL
+        if (input.includes('linkedin.com/embed/')) return input;
+        // Fallback: any linkedin URL
+        if (input.includes('linkedin.com') || input.includes('lnkd.in')) return input;
+        return null;
+      }
+
+      function openLiModal(embedUrl) {
+        liIframeWrapper.innerHTML = `<iframe 
+          src="${embedUrl}" 
+          style="width:100%;height:100%;border:none;" 
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen" 
+          allowfullscreen>
+        </iframe>`;
+        liModalOverlay.classList.add('active');
+        liModalOverlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLiModal() {
+        liModalOverlay.classList.remove('active');
+        liModalOverlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        liIframeWrapper.innerHTML = '';
+      }
+
+      liModalClose.addEventListener('click', closeLiModal);
+      liModalOverlay.addEventListener('click', (e) => {
+        if (e.target === liModalOverlay) closeLiModal();
+      });
+
       // Set up each portfolio project card: thumbnail + click handler
       document.querySelectorAll('.project-card').forEach(card => {
         const playBtn = card.querySelector('.project-play');
         const cardThumb = card.querySelector('.project-card-thumb');
-        const rawYt = card.dataset.youtube;
-        const videoId = extractYouTubeId(rawYt);
+        const rawVideo = card.dataset.youtube || card.dataset.video;
+        const videoId = extractYouTubeId(rawVideo);
+        const liEmbed = card.dataset.linkedin ? extractLinkedInEmbed(card.dataset.linkedin) : null;
 
         // Set custom thumbnail or YouTube thumbnail
         const customThumb = card.dataset.thumb;
@@ -2808,10 +2882,13 @@
         // Click handlers
         function handleClick(e) {
           if (e) e.stopPropagation();
-          if (!videoId) {
-            return; // No valid link yet, do nothing
+          if (videoId) {
+            openYtModal(videoId);
+          } else if (liEmbed) {
+            openLiModal(liEmbed);
+          } else if (rawVideo) {
+            window.open(rawVideo, '_blank', 'noopener,noreferrer');
           }
-          openYtModal(videoId);
         }
 
         if (playBtn) {
